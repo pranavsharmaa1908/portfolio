@@ -275,6 +275,103 @@ a {
 }
 
 /* Responsive */
+/* Project Detail Page */
+.project-article {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 1rem;
+}
+
+
+.project-visual {
+    /* Sidebar column */
+    position: sticky;
+    top: 2rem;
+}
+
+.project-name-tag {
+    display: block;
+    font-family: var(--font-headline);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.project-meta {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.impact-box {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 3px double var(--border-color);
+    background-color: #efede6;
+}
+
+.impact-box h4 {
+    font-family: var(--font-headline);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.project-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border: 1px solid var(--text-ink);
+    filter: grayscale(100%);
+    display: block;
+    cursor: pointer;
+    /* Indicate clickability */
+    transition: filter 0.2s;
+}
+
+.project-image:hover {
+    filter: grayscale(0%);
+}
+
+/* Lightbox */
+#lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: zoom-out;
+}
+
+#lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+
+.project-visual figure {
+    margin-bottom: 2rem;
+}
+
+.project-visual figcaption {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: #555;
+    margin-top: 0.5rem;
+    font-style: italic;
+    text-align: center;
+}
+
 /* Responsive Layouts */
 
 /* Tablet (Landscape) & Small Laptops: 600px - 900px */

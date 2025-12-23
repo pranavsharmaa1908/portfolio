@@ -129,17 +129,24 @@ function renderProjectDetail(container) {
     container.innerHTML = `
         <article class="project-article">
             <div class="project-content">
-                <h2 class="headline large-headline">${project.headline}</h2>
-                <div class="project-meta">
-                    <span class="dateline">${project.dateline} —</span>
-                    <span class="project-name-tag">Project: ${project.name}</span>
-                    ${project.github ? `
-                    <a href="${project.github}" target="_blank" title="View Code" style="color: var(--text-ink); display: flex; align-items: center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                    </a>` : ''}
-                </div>
+                <header class="project-header">
+                    <h2 class="headline large-headline">${project.headline}</h2>
+                    <div class="project-meta">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <span class="dateline">${project.dateline} —</span>
+                                <span class="project-name-tag">Project: ${project.name}</span>
+                            </div>
+                            ${project.github ? `
+                            <a href="${project.github}" target="_blank" title="View Code" style="color: var(--text-ink); display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-size: 0.8rem; text-decoration: none; border: 1px solid var(--text-ink); padding: 0.2rem 0.5rem; text-transform: uppercase;">
+                                <span>View Code</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                                </svg>
+                            </a>` : ''}
+                        </div>
+                    </div>
+                </header>
                 
                 <div class="article-body">
                     <p><span class="drop-cap">${project.details.charAt(0)}</span>${project.details.slice(1)}</p>
@@ -154,20 +161,45 @@ function renderProjectDetail(container) {
             <div class="project-visual">
                 ${project.image ? `
                 <figure>
-                    <img src="${project.image}" alt="${project.name} Screenshot" class="project-image">
-                    <figcaption>Fig 1. ${project.name} in action.</figcaption>
+                    <img src="${project.image}" alt="${project.name} Screenshot" class="project-image" onclick="openLightbox('${project.image}')">
+                    <figcaption>Fig 1. ${project.name} in action. (Click to enlarge)</figcaption>
                 </figure>
                 ` : ''}
 
                 <div class="stack-box">
                     <h4>Tech Stack</h4>
                     <ul class="stack-list">
-                        ${project.stack.map(tech => `<li>${tech}</li>`).join('')}
+                        ${project.stack.map(tech => `<li><a href="https://www.google.com/search?q=${encodeURIComponent(tech + ' programming')}" target="_blank">${tech}</a></li>`).join('')}
                     </ul>
                 </div>
             </div>
         </article>
     `;
+
+    // Ensure lightbox exists
+    if (!document.getElementById('lightbox')) {
+        const lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        lightbox.onclick = closeLightbox;
+        lightbox.innerHTML = '<img id="lightbox-img" src="" alt="Enlarged view">';
+        document.body.appendChild(lightbox);
+    }
+}
+
+function openLightbox(imageSrc) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (lightbox && lightboxImg) {
+        lightboxImg.src = imageSrc;
+        lightbox.style.display = 'flex';
+    }
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.style.display = 'none';
+    }
 }
 
 
